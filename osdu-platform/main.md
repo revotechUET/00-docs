@@ -26,3 +26,29 @@ TO BE FILLED
     - Service Mesh: istio phiên bản 1.20 hoặc mới hơn
 
 - Công cụ đóng gói và triển khai: Helm phiên bản v3.13.x hoặc mới hơn
+
+# Cài đặt
+## Chuẩn bị github
+
+
+
+## Trình tự thực hiện
+- Chuẩn bị persistent volumes và persistent volume claim
+    Lưu ý các phân vùng
+- Chuẩn bị một domain name: (dns server/hostfile)
+
+- Chuẩn bị file `customs.yaml`
+    Lưu ý các giá trị quan trọng (ví dụ username/password)
+
+- Apply helm chart (1 lệnh)
+## Các lưu ý khi thực hiện apply 
+(chờ bao lâu)
+(trình tự success)
+(List các service nào cần Running)
+
+## Các bước thực hiện sau cài đặt (Post installation)
+- Tạo keycloak client, user, password
+
+- Add user vào groups
+
+## Kiểm tra hệ thông sau khi cài đặt
