@@ -195,8 +195,10 @@ workflow-bootstrap-98c565747-c7gc7               1/1     Running                
 ```
 
 ## Các bước thực hiện sau cài đặt (Post installation)
-- Tạo keycloak client, user, password
 
-- Add user vào groups
+- Tạo keycloak client, user, password trên realms OSDU
 
-## Kiểm tra hệ thông sau khi cài đặt
+## Kiểm tra hệ thống sau khi cài đặt
+- Truy cập vào trang web http://keycloak.pvn.local
+- Truy cập vào trang web http://minio.pvn.local
+- Truy cập vào trang web http://airflow.pvn.local
