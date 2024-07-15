@@ -66,7 +66,7 @@ spec:
     requests:
       storage: 1000Gi
 ```
-- File manifest của ingestion tool **ags-pyosdu.yaml**. Lưu ý thay thông tin tương ứng với cụm k8s. **hostAliases**, các biến môi trường tuỳ chỉnh.
+- File manifest của ingestion tool **ags-pyosdu.yaml**. Lưu ý thay thông tin tương ứng với cụm k8s. **hostAliases**, các biến môi trường tuỳ chỉnh. Data ingestion được mount vào thư mục **/data-ingest** của pod
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
