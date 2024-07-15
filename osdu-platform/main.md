@@ -214,6 +214,7 @@ Các thông tin sau cần được tạo trong realm OSDU của Keycloak trong c
 Tham khảo tài liệu PVN OSDU Ingestion tools
 
 ## Kiểm tra hệ thống sau khi cài đặt
-- Truy cập vào trang web http://keycloak.pvn.local
-- Truy cập vào trang web http://minio.pvn.local
-- Truy cập vào trang web http://airflow.pvn.local
+Nếu truy cập và login thành công được vào các trang sau thì hệ thống OSDU Platform đã được cài đặt thành công:
+-	http://keycloak.pvn.local
+-	http://minio.pvn.local
+-	http://airflow.pvn.local
