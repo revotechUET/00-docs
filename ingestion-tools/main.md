@@ -148,6 +148,7 @@ spec:
           value: OIDC_LOGIN
         - name: ADMIN_CLIENT_ID
           value: datafier
+        # Keycloak datafier secret
         - name: ADMIN_CLIENT_SECRET
           value: brXszXvfhVJNWJqa
         - name: MINIO_ENDPOINT
@@ -199,4 +200,14 @@ kubectl apply -f ags-pyosdu.yaml
 ```bash
 kubectl get pods | grep ags-pyosdu
 ags-pyosdu-858d7989d5-b4mzl                      1/1     Running                       0              4d19h
+```
+## Phân quyền user
+- Mở command line của pod py-osdu
+```bash
+kubectl exec -it ags-pyosdu-858d7989d5-b4mzl -- bash
+```
+- Mặc định tất cả user cần được add vào group **data.default.viewers@osdu.group** và **users@osdu.group** để có thể thục hiện tìm kiếm dữ liệu trên OSDU
+```bash
+python -m wi_pyosdu.entitlement --add2group --user username@mail.com --group data.default.viewers@osdu.group
+python -m wi_pyosdu.entitlement --add2group --user username@mail.com --group users@osdu.group
 ```
