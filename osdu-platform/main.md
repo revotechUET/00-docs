@@ -196,7 +196,16 @@ workflow-bootstrap-98c565747-c7gc7               1/1     Running                
 
 ## Các bước thực hiện sau cài đặt (Post installation)
 
-- Tạo keycloak client, user, password trên realms OSDU
+### Tạo dữ liệu account trên keycloak 
+Các thông tin sau cần được tạo trong realm OSDU của Keycloak trong cụm Hạ tầng k8s
+- Thông tin về client
+- Thông tin về user và password (account thực hiện các thao tác với OSDU)
+
+**Lưu ý**:
+- Tài khoản người dùng cần có thông tin email (có thể không cần verified)
+
+### Thêm tài khoản account keycloak vào nhóm quyền của OSDU
+Tham khảo tài liệu PVN OSDU Ingestion tools
 
 ## Kiểm tra hệ thống sau khi cài đặt
 - Truy cập vào trang web http://keycloak.pvn.local
