@@ -199,6 +199,10 @@ workflow-bootstrap-98c565747-c7gc7               1/1     Running                
 ### Tạo dữ liệu account trên keycloak 
 Các thông tin sau cần được tạo trong realm OSDU của Keycloak trong cụm Hạ tầng k8s
 - Thông tin về client
+![image](https://github.com/user-attachments/assets/36b0d940-b4a4-406e-a27e-5c8cea9812eb)
+![image](https://github.com/user-attachments/assets/262470c0-bf16-43e2-90a1-99a40974a1c5)
+
+
 - Thông tin về user và password (account thực hiện các thao tác với OSDU)
 
 **Lưu ý**:
