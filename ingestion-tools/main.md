@@ -24,19 +24,20 @@ PVN OSDU Ingestion Tools cần được build thành Docker image để chạy t
 wget https://file.i2g.cloud/osdu/osdu-ingest.tar.gz 
 tar -xvzf osdu-ingest.tar.gz
 ```
-- Bước 2: Buid docker image
+- Bước 2: Buid docker image, ví dụ IP habor: **10.10.10.1**
 ```bash
-docker build -t habor-ip/osdu-ingest:latest .
+docker build -t 10.10.10.1/osdu/osdu-ingest:latest .
 ```
-- Bước 3: Publish image lên registry
+- Bước 3: Publish image lên habor registry
 ```bash
-docker push habor-ip/osdu-ingest:latest
+docker push 10.10.10.1/osdu/osdu-ingest:latest
 ```
 # Triển khai PVN OSDU Ingestion Tools vào hạ tầng K8S
 Sau khi PVN OSDU Ingestion Tools image được build thành công. Image này cần được triển khai vào hạ tầng K8S. Các bước thực hiện được trình bày trong các tiểu mục sau
 
 ## Chuẩn bị thông tin triển khai 
-- Storage: Size tuỳ thuộc vào dung lượng của data ingest **ags-pyosdu-pvc.yaml**
+- Địa chỉ NFS server (chứa data phục vụ cho ingestion). Ví dụ: **192.168.1.15/volume1/osdu-ingest**
+- Storage: Tạo pvc mount nfs storage **ags-pyosdu-pvc.yaml**
 ```yaml
 apiVersion: v1
 kind: PersistentVolume
@@ -90,7 +91,7 @@ spec:
         persistentVolumeClaim:
           claimName: osdu-data-ingest-pvc
       hostAliases:
-      - ip: 192.168.1.80
+      - ip: 192.168.1.80 # địa chỉ IP của osdu master node hoặc VIP của cụm masters
         hostnames:
         - osdu.pvn.local
         - s3.pvn.local
@@ -99,7 +100,8 @@ spec:
         - minio.pvn.local
       containers:
       - name: ags-pyosdu
-        image: 10.60.157.48/osdu/ags/py-osdu:v1.4
+        # habor pyosdu image
+        image: 10.10.10.1/osdu/ags/py-osdu:v1.4
         imagePullPolicy: IfNotPresent
         command: ["python"]
         args: ["-m", "uvicorn", "server.server:app","--host", "0.0.0.0", "--port", "8000"]
@@ -112,24 +114,34 @@ spec:
           mountPath: /data-ingest
         workingDir: /app
         env:
+        # Thông tin minio của cụm osdu
         - name: MC_HOST_minio
           value: "http://minio:12345678@s3.osdu.i2g.cloud"
+        # Địa chỉ keycloak
         - name: AUTH_URL
           value: https://keycloak.i2g.cloud
+        # Keycloak token fetch url
         - name: TOKEN_FETCH_URL
           value: https://keycloak.i2g.cloud/realms/osdu/protocol/openid-connect/token
+        # Địa chỉ osdu api
         - name: OSDU_BASE
           value: http://osdu.osdu.i2g.cloud
+        # Client id của ứng dụng ingestion
         - name: CLIENT_ID
           value: wi
+        # Client secret
         - name: CLIENT_SECRET
           value: langnhang
+        # User của ứng dụng ingestion
         - name: USERNAME
           value: wi@osdu.i2g.cloud
+        # Mật khẩu
         - name: PASSWORD
           value: "123456"
+        # OSDU partition
         - name: PARTITION_ID
           value: osdu
+        # Keycloak oauth base url
         - name: OAUTH_BASE_URL
           value: https://keycloak.i2g.cloud/realms/osdu/protocol/openid-connect/auth
         - name: AUTH_METHOD
@@ -148,6 +160,7 @@ spec:
           value: http://oetp-server:9002
         - name: SERVER_AUTHENTICATE
           value: "True"
+        # API Key của app ingestion
         - name: SERVER_API_KEY
           value: "Pvn2024"
         - name: SERVER_INGEST_DATA_PATH
@@ -155,8 +168,10 @@ spec:
           value: "/data-ingest/"
         - name: PATH
           value: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.local/lib/python3.10/site-packages/bin"
+        # User admin keycloak
         - name: MASTER_USERNAME
           value: user
+        # Password admin keycloak
         - name: MASTER_PASSWORD
           value: "@Revotech123"
 ---
@@ -179,4 +194,9 @@ spec:
 ```bash
 kubectl apply -f ags-pyosdu-pvc.yaml
 kubectl apply -f ags-pyosdu.yaml
+```
+## Kiểm tra hệ thống sau khi cài đặt
+```bash
+kubectl get pods | grep ags-pyosdu
+ags-pyosdu-858d7989d5-b4mzl                      1/1     Running                       0              4d19h
 ```
